@@ -1,0 +1,23 @@
+it is faster than SOFA matlab.
+bugs:
+for the velocity rotation, one should not use the DS2R, which is defined by the solar day instead of the sidereal day. The real earth rotation rate is around 7.29e-5 instead of 7.27e-5. A simple way to verify, using the IERS.ERA to calculate epoch t and t+1second and subtract one from another and you can get the earth rotation rate.
+The annotation for the EOP parameters are wrong but the code is correct. e.g. du is UT1-UTC.
+
+
+
+
+To make it faster, in USNO
+one may add one more line at the end of the function:
+function this = initWithFinalsHttp (this,kind)
+
+% save the EOP2000finalall.txt
+save('EOP2000finalall.txt','data','-ascii')
+
+end
+
+replace this.bullA=this.initWithFinalsHttp(); in
+
+function this = initWIthEOPdata(this,opt)
+
+this.bullA=load('EOP2000finalall.txt');
+end
