@@ -1,0 +1,2 @@
+运行环境：MATLAB simulink 2023b
+运行流程：首先运行parameter进行参数初始化，打开simulink，打开Sim8_1进入simulink仿真，matlab脚本文件包括LADRC控制器及飞行器纵向通道模型，运行simulink，观察示波器图像即可
