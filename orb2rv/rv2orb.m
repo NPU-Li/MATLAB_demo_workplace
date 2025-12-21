@@ -98,6 +98,7 @@
 % Programed by Darin Koblick  03-04-2012                                  %
 % Updated to address circular equatorial orbits       12/12/2013          %
 %------------------------------------------------------------------       %
+%这里的输出没有平近点角，可以忽略上述描述的M
 function [a,eMag,i,O,o,nu,truLon,argLat,lonPer,p] = rv2orb(r,v,mu)
 if ~exist('mu','var');  t = getConst(); mu = t.Earth.Mu; end
 %Specific angular momentum

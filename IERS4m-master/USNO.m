@@ -318,7 +318,10 @@ classdef USNO < handle
     
     % http data parsers
     methods(Access = 'public')                             
-        
+        function this = initWIthEOPdata(this,opt)
+
+            this.bullA=load('EOP2000finalall.txt');
+        end
         function this = initWithFinalsHttp (this,kind)     
                         
             %
@@ -338,8 +341,14 @@ classdef USNO < handle
             % specify where to get the data
             if nargin == 2 && strcmpi(kind,'daily')
                 url = 'https://maia.usno.navy.mil/ser7/finals.daily';
+                %原函数是http协议，现在更改为https协议
+                %本地电脑需要修改dns文件，以便代理可以访问
+                %修改的dns文件需要在C:\Windows\System32\drivers\etc\hosts最后一行中添加199.211.133.23 maia.usno.navy.mil即可实现
+                %以上是美国海军的官方网站，以下是nasa的镜像站，两者数据完全一致
+                %url = 'https://cddis.nasa.gov/archive/products/iers/finals.daily';        https://maia.usno.navy.mil/ser7/finals2000A.daily
             else
                 url = 'https://maia.usno.navy.mil/ser7/finals2000A.all';
+                %url = 'https://cddis.nasa.gov/archive/products/iers/finals2000A.all';
             end
             
             % get the data
@@ -353,6 +362,8 @@ classdef USNO < handle
             
             % that's all 
             this.bullA = data;
+            save('EOP2000finalall.txt','data','-ascii');
+            %将获得的数据保存为这个形式
         end
         
         function this = initWithSer7Http   (this)          

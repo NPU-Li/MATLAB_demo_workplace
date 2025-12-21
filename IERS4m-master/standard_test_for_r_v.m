@@ -10,12 +10,12 @@ r_itrf_expected = [-1033.4793830; 7901.2952754; 6380.3565958];
 v_itrf_expected = [-3.225636520; -2.872451450; 5.531924446];
 % 使用Vallado论文中的精确EOP参数
 eopobj = USNO(); 
-%eopobj = eopobj.initWithFinalsHttp(); 
-% [xp,yp,du,dt] = eopobj.getEOP(fMJD_UTC);
-xp = -0.140682;   % 极移X（角秒）
-yp = 0.333309;    % 极移Y（角秒）
-du = -0.439962;   % UT1-UTC（秒）
-dt = 32;          % TAI-UTC（秒）
+eopobj = eopobj.initWithFinalsHttp(); 
+[xp,yp,du,dt] = eopobj.getEOP(fMJD_UTC);
+% xp = -0.140682;   % 极移X（角秒）
+% yp = 0.333309;    % 极移Y（角秒）
+% du = -0.439962;   % UT1-UTC（秒）
+% dt = 32;          % TAI-UTC（秒）
 %% 计算GCRS到ITRS的转换矩阵
 % 1. 计算3x3位置转换矩阵（GCRS -> ITRS）
 GC2IT = IERS.GCRS2ITRS(fMJD_UTC, dt, du, xp, yp);

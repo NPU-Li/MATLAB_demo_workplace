@@ -1,7 +1,8 @@
 %% GCRS ↔ ITRS 双向坐标转换验证
 % 使用CIO方法和IAU 2000/2006模型
 % 基于矩阵求逆实现高精度双向转换
-
+clc;
+clear;
 % 输入时间：2004年4月6日 07:51:28.386 UTC
 fMJD_UTC = 53101.3274118751;
 
@@ -14,15 +15,21 @@ r_itrf_expected = [-1033.4793830; 7901.2952754; 6380.3565958];
 v_itrf_expected = [-3.225636520; -2.872451450; 5.531924446];
 
 % 使用Vallado论文中的精确EOP参数
-xp = -0.140682;   % 极移X（角秒）
-yp = 0.333309;    % 极移Y（角秒）
-du = -0.439962;   % UT1-UTC（秒）
-dt = 32;          % TAI-UTC（秒）
+% xp = -0.140682;   % 极移X（角秒）
+% yp = 0.333309;    % 极移Y（角秒）
+% du = -0.439962;   % UT1-UTC（秒）
+% dt = 32;          % TAI-UTC（秒）
 
 %使用服务器下载最新EOP参数
-% eopobj = USNO(); 
-% %eopobj = eopobj.initWithFinalsHttp(); 
-% [xp,yp,du,dt] = eopobj.getEOP(fMJD_UTC);
+eopobj = USNO(); 
+%eopobj = eopobj.initWithFinalsHttp(); 
+
+eopobj = eopobj.initWIthEOPdata(); %采用之前下载好的文件
+[xp,yp,du,dt] = eopobj.getEOP(fMJD_UTC);
+% xp 
+% yp
+% du
+% dt
 %% 计算正确的角速度（基于UT1）
 theta1 = IERS.ERA(fMJD_UTC, du);
 theta2 = IERS.ERA(fMJD_UTC + 1/86400, du);
