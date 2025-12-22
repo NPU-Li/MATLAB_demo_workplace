@@ -1,21 +1,27 @@
 clear;
 clc;
-mjd = utc2mjd(2019, 12, 29, 0, 0, 0);
+% mjd = utc2mjd(2019, 12, 29, 0, 0, 0);
 % mjd = utc2mjd(2020, 1, 5, 0, 0, 0);
+mjd = utc2mjd(2020, 3, 22, 0, 0, 0);
 %current is 58846 2020 1 5 is 58853
 fMJD_UTC = mjd;
 
 %输入ITRS数据
+%data of 2019/12/29 MJD 58846
 % PL51  -6081.051297   4312.745884  -9813.822846 999999.999999
 % VL51  52005.689664   8852.857209 -28503.945088 999999.999999
-%data of 2019/12/29
-r_itrf = [-6081.051297; 4312.745884; -9813.822846];
-v_itrf = [5.2005689664; 0.8852857209; -2.8503945088];
+% r_itrf = [-6081.051297; 4312.745884; -9813.822846];
+% v_itrf = [5.2005689664; 0.8852857209; -2.8503945088];
+%data of 2020/01/05 MJD 58853
 % PL51  -8459.396554  -1494.796210   8701.915129 999999.999999
 % VL51 -41126.340246  27177.508498 -35021.859535 999999.999999
-%data of 2020/01/05
 % r_itrf = [-8459.396554; -1494.796210; 8701.915129];
 % v_itrf = [-4.1126340246; 2.7177508498; -3.5021859535];
+%data of 2020/03/22 MJD 58930
+% PL51   3161.960716 -10163.608262   6013.434651 999999.999999
+% VL51 -36439.398855  15977.603912  45781.994947 999999.999999
+r_itrf = [3161.960716; -10163.608262; 6013.434651];
+v_itrf = [-3.6439398855; 1.5977603912; 4.5781994947];
 %使用服务器下载最新EOP参数
 eopobj = USNO(); 
 eopobj = eopobj.initWIthEOPdata(); 
@@ -68,6 +74,21 @@ fprintf('RAAN (升交点赤经): %.10f deg\n', RAAN_deg);
 fprintf('AOP  (近地点幅角): %.10f deg\n', AOP_deg);
 fprintf('M    (平近点角): %.10f deg\n\n', M_deg);
 
+% ...（你的代码前半部分保持不变）...
 
+% ============== 3. 按照目标格式输出 (最终修正版) ==============
+% 关键：使用单引号，直接写 \t 和 \n
 
+% 定义格式化函数
+formatNumber = @(num, intDigits, fracDigits) ...
+    sprintf('+%0*.*fE+00', intDigits+fracDigits+1, fracDigits, num);
+
+% 输出 - 注意单引号和直接的 \t \n
+fprintf('%s;\tMJD  [UTC]\n', formatNumber(mjd, 5, 11));
+fprintf('%s;\tSMA  [km]\n', formatNumber(a, 5, 12));
+fprintf('%s;\tECC  [-]\n', formatNumber(e, 1, 15));
+fprintf('%s;\tINC  [deg]\n', formatNumber(INC_deg, 3, 12));
+fprintf('%s;\tRAAN [deg]\n', formatNumber(RAAN_deg, 2, 14));
+fprintf('%s;\tAOP  [deg]\n', formatNumber(AOP_deg, 2, 14));
+fprintf('%s;\tM    [deg]\n', formatNumber(M_deg, 3, 14));
 
